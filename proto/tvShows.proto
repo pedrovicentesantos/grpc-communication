@@ -1,0 +1,42 @@
+syntax = "proto3";
+import "./shared.proto";
+
+service TvShowService {
+  rpc find (TvShowId) returns (TvShow);
+  rpc list (Shared.Void) returns (TVShowList);
+  rpc create (TvShowCreate) returns (TvShow);
+  rpc remove (TvShowId) returns (Shared.Void);
+  rpc update (TvShowUpdateRequest) returns (TvShow);
+}
+
+message TvShowId {
+  string id = 1;
+}
+
+message TvShow {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  optional float rating = 4;
+}
+
+message TvShowCreate {
+  string name = 1;
+  string description = 2;
+  optional float rating = 3;
+}
+
+message TvShowUpdate {
+  optional string name = 1;
+  optional string description = 2;
+  optional float rating = 3;
+}
+
+message TvShowUpdateRequest {
+  string id = 1;
+  TvShowUpdate updateParams = 2;
+}
+
+message TVShowList {
+  repeated TvShow tvShows = 1;
+}
