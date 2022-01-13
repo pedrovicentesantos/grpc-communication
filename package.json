@@ -5,7 +5,9 @@
   "main": "src/server.js",
   "scripts": {
     "start:server": "node src/server.js",
-    "start:client": "node src/client.js",
+    "start:client-promise": "node src/client-promise.js",
+    "start:client-callback": "node src/client-callback.js",
+    "start:client-async": "node src/client-async.js",
     "compile": "protoc --js_out=import_style=commonjs,binary:. proto/*.proto"
   },
   "dependencies": {
