@@ -1,7 +1,9 @@
 const grpc = require('grpc');
+const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
 
-const TvShowsDefinition = grpc.load(path.resolve(__dirname, '../proto/tvShows.proto'));
+const protoObject = protoLoader.loadSync(path.resolve(__dirname, '../proto/tvShows.proto'));
+const TvShowsDefinition = grpc.loadPackageDefinition(protoObject);
 const tvShowClient = new TvShowsDefinition.TvShowService('localhost:50051', grpc.credentials.createInsecure());
 
 // eslint-disable-next-line consistent-return

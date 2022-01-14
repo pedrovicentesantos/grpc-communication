@@ -28,7 +28,9 @@ class TvShowRepository {
   }
 
   listAll() {
-    return TvShowRepository.#collection;
+    return {
+      tvShows: TvShowRepository.#collection,
+    };
   }
 
   create(tvShow) {

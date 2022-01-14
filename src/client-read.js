@@ -16,26 +16,5 @@ function promisify(client, method, parameters) {
 }
 
 (async () => {
-  console.log('---------------------------------------------------------------------------------');
-  console.log('CREATING TV SHOWS');
-  console.log('---------------------------------------------------------------------------------');
-  promisify(
-    tvShowClient,
-    'create',
-    {
-      name: 'Santa Clarita Diet',
-      description: 'Zumbis',
-      rating: 9.5,
-    },
-  );
-  promisify(
-    tvShowClient,
-    'create',
-    {
-      name: 'Euphoria',
-      description: 'Drama',
-      rating: 9.5,
-    },
-  );
   promisify(tvShowClient, 'list', {}).then(console.log);
 })();
