@@ -49,7 +49,9 @@ class TvShowRepository {
   update(tvShowId, updateData) {
     const tvShow = this.findById(tvShowId);
     const filteredData = Object.entries(updateData).reduce((acc, [key, value]) => {
-      if (value) acc[key] = value;
+      if (
+        (Array.isArray(value) && value.length > 0)
+        || (value && !Array.isArray(value))) acc[key] = value;
       return acc;
     }, {});
 

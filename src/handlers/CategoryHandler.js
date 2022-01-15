@@ -16,10 +16,9 @@ function find({ request }, callback) {
 }
 
 function update({ request }, callback) {
-  const { id } = request;
-  const updateParams = request.categoryUpdateParams;
-
   try {
+    const { id } = request;
+    const { updateParams } = request;
     const category = categoryController.update(id, updateParams);
     return callback(null, category);
   } catch (err) {
@@ -33,7 +32,11 @@ function remove({ request }, callback) {
 }
 
 function create({ request }, callback) {
-  return callback(null, categoryController.create(request));
+  try {
+    return callback(null, categoryController.create(request));
+  } catch (err) {
+    return callback(err, null);
+  }
 }
 
 module.exports = {

@@ -16,10 +16,9 @@ function find({ request }, callback) {
 }
 
 function update({ request }, callback) {
-  const { id } = request;
-  const updateParams = request.tvShowUpdateParams;
-
   try {
+    const { id } = request;
+    const { updateParams } = request;
     const tvShow = tvShowController.update(id, updateParams);
     return callback(null, tvShow);
   } catch (err) {
@@ -33,7 +32,11 @@ function remove({ request }, callback) {
 }
 
 function create({ request }, callback) {
-  return callback(null, tvShowController.create(request));
+  try {
+    return callback(null, tvShowController.create(request));
+  } catch (err) {
+    return callback(err, null);
+  }
 }
 
 module.exports = {
