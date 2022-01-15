@@ -1,3 +1,4 @@
 node_modules/
 tvShows.json
 categories.json
+yarn.lock
