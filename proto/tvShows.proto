@@ -18,18 +18,21 @@ message TvShow {
   string name = 2;
   string description = 3;
   optional float rating = 4;
+  repeated string categories = 5;
 }
 
 message TvShowCreate {
   string name = 1;
   string description = 2;
   optional float rating = 3;
+  repeated string categories = 4;
 }
 
 message TvShowUpdate {
   optional string name = 1;
   optional string description = 2;
   optional float rating = 3;
+  repeated string categories = 4;
 }
 
 message TvShowUpdateRequest {

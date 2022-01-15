@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
@@ -19,17 +20,20 @@ function handle(err, data) {
 function skip() {
   return null;
 }
-
-console.log('---------------------------------------------------------------------------------');
-console.log('CREATING TV SHOWS');
-console.log('---------------------------------------------------------------------------------');
-tvShowClient.create({ name: 'Santa Clarita Diet', description: 'Zumbis', rating: 9.5 }, skip);
-tvShowClient.create({ name: 'Euphoria', description: 'Drama', rating: 9.5 }, skip);
-tvShowClient.list({}, handle);
-
 console.log('---------------------------------------------------------------------------------');
 console.log('CREATING CATEGORIES');
 console.log('---------------------------------------------------------------------------------');
 categoryClient.create({ name: 'Comedy' }, skip);
 categoryClient.create({ name: 'Drama', favorite: false }, skip);
 categoryClient.list({}, handle);
+
+console.log('---------------------------------------------------------------------------------');
+console.log('CREATING TV SHOWS');
+console.log('---------------------------------------------------------------------------------');
+tvShowClient.create({
+  name: 'Santa Clarita Diet', description: 'Zumbis', rating: 9.5,
+}, skip);
+tvShowClient.create({
+  name: 'Euphoria', description: 'Drama', rating: 9.5,
+}, skip);
+tvShowClient.list({}, handle);

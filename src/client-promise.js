@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
@@ -21,6 +22,27 @@ function promisify(client, method, parameters) {
 
 (async () => {
   console.log('---------------------------------------------------------------------------------');
+  console.log('CREATING CATEGORIES');
+  console.log('---------------------------------------------------------------------------------');
+  const updateCategory = await promisify(categoryClient, 'create', { name: 'Comedy' });
+  const deleteCategory = await promisify(categoryClient, 'create', { name: 'Drama', favorite: false });
+
+  promisify(categoryClient, 'list', {}).then((categories) => {
+    console.log('---------------------------------------------------------------------------------');
+    console.log('LISTING CATEGORIES');
+    console.log('---------------------------------------------------------------------------------');
+    console.log(categories);
+  });
+
+  await promisify(categoryClient, 'update', { id: updateCategory.id, updateParams: { favorite: true } });
+  promisify(categoryClient, 'find', { id: updateCategory.id }).then((searchedCategory) => {
+    console.log('---------------------------------------------------------------------------------');
+    console.log('UPDATING CATEGORY');
+    console.log('---------------------------------------------------------------------------------');
+    console.log(searchedCategory);
+  });
+
+  console.log('---------------------------------------------------------------------------------');
   console.log('CREATING TV SHOWS');
   console.log('---------------------------------------------------------------------------------');
   const updateTvShow = await promisify(
@@ -30,6 +52,7 @@ function promisify(client, method, parameters) {
       name: 'Santa Clarita Diet',
       description: 'Zumbis',
       rating: 9.5,
+      categories: [updateCategory.id],
     },
   );
   const deleteTvShow = await promisify(
@@ -39,8 +62,23 @@ function promisify(client, method, parameters) {
       name: 'Euphoria',
       description: 'Drama',
       rating: 9.5,
+      categories: [deleteCategory.id],
     },
   );
+  try {
+    await promisify(
+      tvShowClient,
+      'create',
+      {
+        name: 'Test',
+        description: 'Description',
+        rating: 9.5,
+        categories: ['not-existing-category'],
+      },
+    );
+  } catch (err) {
+    console.error('Error creating tv show: Category does not exist');
+  }
 
   promisify(tvShowClient, 'list', {}).then((tvShows) => {
     console.log('---------------------------------------------------------------------------------');
@@ -62,27 +100,6 @@ function promisify(client, method, parameters) {
     console.log('UPDATING TV SHOW');
     console.log('---------------------------------------------------------------------------------');
     console.log(searchedTvShow);
-  });
-
-  console.log('---------------------------------------------------------------------------------');
-  console.log('CREATING CATEGORIES');
-  console.log('---------------------------------------------------------------------------------');
-  const updateCategory = await promisify(categoryClient, 'create', { name: 'Comedy' });
-  const deleteCategory = await promisify(categoryClient, 'create', { name: 'Drama', favorite: false });
-
-  promisify(categoryClient, 'list', {}).then((categories) => {
-    console.log('---------------------------------------------------------------------------------');
-    console.log('LISTING CATEGORIES');
-    console.log('---------------------------------------------------------------------------------');
-    console.log(categories);
-  });
-
-  await promisify(categoryClient, 'update', { id: updateCategory.id, updateParams: { favorite: true } });
-  promisify(categoryClient, 'find', { id: updateCategory.id }).then((searchedCategory) => {
-    console.log('---------------------------------------------------------------------------------');
-    console.log('UPDATING CATEGORY');
-    console.log('---------------------------------------------------------------------------------');
-    console.log(searchedCategory);
   });
 
   console.log('---------------------------------------------------------------------------------');

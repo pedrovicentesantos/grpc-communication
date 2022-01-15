@@ -4,10 +4,9 @@
   "license": "MIT",
   "main": "src/server.js",
   "scripts": {
-    "start:server": "node src/server.js",
+    "start:server": "nodemon --ignore src/data/db src/server.js",
     "start:client-promise": "node src/client-promise.js",
     "start:client-callback": "node src/client-callback.js",
-    "start:client-async": "node src/client-async.js",
     "compile": "protoc --js_out=import_style=commonjs,binary:. proto/*.proto"
   },
   "dependencies": {
@@ -19,6 +18,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1"
+    "eslint-plugin-import": "^2.22.1",
+    "nodemon": "^2.0.15"
   }
 }

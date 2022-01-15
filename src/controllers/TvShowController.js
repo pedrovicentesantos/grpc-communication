@@ -1,8 +1,10 @@
 const TvShowRepository = require('../data/TvShowRepository');
+const CategoryController = require('./CategoryController');
 
 class TvShowController {
   constructor() {
     this.tvShowRepository = new TvShowRepository();
+    this.categoryController = new CategoryController();
   }
 
   find(id) {
@@ -16,6 +18,7 @@ class TvShowController {
   }
 
   create(params) {
+    this.assertCategories(params.categories);
     const tvShow = this.tvShowRepository.create(params);
     this.tvShowRepository.save();
     return tvShow;
@@ -23,6 +26,7 @@ class TvShowController {
 
   update(tvShowId, updateData) {
     this.find(tvShowId);
+    if (updateData?.categories) this.assertCategories(updateData.categories);
     const tvShow = this.tvShowRepository.update(tvShowId, updateData);
     this.tvShowRepository.save();
     return tvShow;
@@ -30,6 +34,12 @@ class TvShowController {
 
   delete(id) {
     return this.tvShowRepository.delete(id).save();
+  }
+
+  assertCategories(categoriesList) {
+    categoriesList.forEach((category) => {
+      this.categoryController.find(category);
+    });
   }
 }
 
