@@ -2,9 +2,13 @@ const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
 
-const protoObject = protoLoader.loadSync(path.resolve(__dirname, '../proto/tvShows.proto'));
-const TvShowsDefinition = grpc.loadPackageDefinition(protoObject);
+const tvShowProtoObject = protoLoader.loadSync(path.resolve(__dirname, '../proto/tvShows.proto'));
+const TvShowsDefinition = grpc.loadPackageDefinition(tvShowProtoObject);
 const tvShowClient = new TvShowsDefinition.TvShowService('localhost:50051', grpc.credentials.createInsecure());
+
+const categoryProtoObject = protoLoader.loadSync(path.resolve(__dirname, '../proto/categories.proto'));
+const CategoriesDefinition = grpc.loadPackageDefinition(categoryProtoObject);
+const categoryClient = new CategoriesDefinition.CategoryService('localhost:50051', grpc.credentials.createInsecure());
 
 function promisify(client, method, parameters) {
   return new Promise((resolve, reject) => {
@@ -38,4 +42,11 @@ function promisify(client, method, parameters) {
     },
   );
   promisify(tvShowClient, 'list', {}).then(console.log);
+
+  console.log('---------------------------------------------------------------------------------');
+  console.log('CREATING CATEGORIES');
+  console.log('---------------------------------------------------------------------------------');
+  promisify(categoryClient, 'create', { name: 'Comedy' });
+  promisify(categoryClient, 'create', { name: 'Drama', favorite: false });
+  promisify(categoryClient, 'list', {}).then(console.log);
 })();
